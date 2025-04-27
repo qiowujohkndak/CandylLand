@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CandyLand - Il paradiso delle caramelle</title>
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="bg-light py-3 shadow-sm">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+          <h1 class="candy-brand">CandyLand</h1>
+          <div class="d-flex align-items-center">
+            <a
+              href="https://t.me/asraelops"
+              class="btn btn-contact me-3"
+              target="_blank"
+            >
+              <i class="fab fa-telegram me-1"></i> Contattaci
+            </a>
+            <div class="cart-icon" id="cartIcon">
+              <i class="fas fa-shopping-cart fs-4"></i>
+              <span class="badge bg-primary rounded-pill" id="cartCount"
+                >0</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container my-5">
+      <section class="hero-section text-center mb-5">
+        <h2 class="display-4 fw-bold candy-title">
+          Le caramelle più dolci del mondo
+        </h2>
+        <p class="lead">
+          Scopri la nostra selezione di caramelle artigianali, perfette per ogni
+          occasione!
+        </p>
+      </section>
+
+      <!-- Products Grid -->
+      <section class="products-section">
+        <div class="row g-4" id="products-container">
+          <!-- Products will be loaded dynamically with JavaScript -->
+        </div>
+      </section>
+    </main>
+
+    <!-- Shopping Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+      <div class="cart-header">
+        <h3 class="cart-title">Il tuo carrello</h3>
+        <button class="btn-close" id="closeCart"></button>
+      </div>
+      <div class="cart-body" id="cartItems">
+        <!-- Cart items will be added here dynamically -->
+        <div class="empty-cart-message" id="emptyCartMessage">
+          <i class="fas fa-shopping-basket"></i>
+          <p>Il tuo carrello è vuoto</p>
+        </div>
+      </div>
+      <div class="cart-footer">
+        <div class="d-flex justify-content-between mb-3">
+          <span class="fw-bold">Totale:</span>
+          <span class="cart-total" id="cartTotal">0,00 €</span>
+        </div>
+        <a href="#" class="btn btn-checkout w-100 disabled" id="checkoutBtn">
+          Procedi all'ordine <i class="fab fa-telegram ms-1"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Cart Overlay -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+
+    <!-- Footer -->
+    <footer class="bg-light py-4 mt-5">
+      <div class="container text-center">
+        <p class="mb-0">© 2025 CandyLand - Tutti i diritti riservati</p>
+        <div class="social-icons mt-2">
+          <a href="#" class="text-decoration-none me-2"
+            ><i class="fab fa-facebook"></i
+          ></a>
+          <a href="#" class="text-decoration-none me-2"
+            ><i class="fab fa-instagram"></i
+          ></a>
+          <a href="#" class="text-decoration-none"
+            ><i class="fab fa-twitter"></i
+          ></a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+  </body>
+</html>
