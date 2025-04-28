@@ -434,6 +434,10 @@ video::-webkit-media-controls-volume-slider {
   .cart-sidebar {
     width: 300px;
   }
+
+  .cart-footer {
+    padding-bottom: 35px; /* Aumentato da 30px per alzare il bottone */
+  }
 }
 
 @media (max-width: 575.98px) {
@@ -455,15 +459,59 @@ video::-webkit-media-controls-volume-slider {
   }
 
   .product-price {
-    font-size: 1rem;
+    font-size: 0.85rem; /* Ridotto da 1rem a 0.85rem */
+    font-weight: 600; /* Ridotto da 700 a 600 per evitare testi troppo pesanti */
   }
 
   .btn-candy {
-    padding: 5px 10px;
-    font-size: 0.8rem;
+    padding: 4px 8px; /* Ridotto da 5px 10px */
+    font-size: 0.75rem; /* Ridotto da 0.8rem */
   }
 
   .cart-sidebar {
     width: 280px;
+  }
+
+  /* Fix per il bottone procedi all'ordine */
+  .cart-footer {
+    padding-bottom: 45px; /* Aumentato ulteriormente */
+  }
+
+  .btn-checkout {
+    margin-bottom: 25px; /* Aumentato da 20px per alzare ulteriormente il bottone */
+  }
+}
+
+/* Modifiche per fix Safari mobile */
+@supports (-webkit-touch-callout: none) {
+  /* Solo per Safari su iOS */
+  .cart-footer {
+    padding-bottom: 50px !important; /* Aumentato da 40px per alzare ulteriormente il bottone */
+  }
+
+  .btn-checkout {
+    margin-bottom: 30px; /* Aumentato da 20px per alzare ulteriormente il bottone */
+  }
+}
+
+/* Ulteriori ottimizzazioni per dispositivi molto piccoli */
+@media (max-width: 400px) {
+  .product-price {
+    font-size: 0.8rem; /* Ulteriormente ridotto per schermi molto piccoli */
+  }
+
+  .btn-candy {
+    padding: 3px 6px;
+    font-size: 0.7rem;
+  }
+
+  .product-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .product-footer .btn-candy {
+    margin-top: 5px;
+    align-self: flex-end;
   }
 }
