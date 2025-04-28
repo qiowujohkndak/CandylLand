@@ -190,9 +190,13 @@
 
           cartItemEl.innerHTML = `
             <div class="cart-item-img">
-              <video class="cart-item-video" muted loop autoplay playsinline>
-                <source src="${item.video}" type="video/mp4">
-              </video>
+              <iframe 
+                class="cart-item-video" 
+                src="https://www.youtube.com/embed/4eUD9kcNygY?mute=1&autoplay=0&loop=1&controls=0&playlist=4eUD9kcNygY" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+              </iframe>
             </div>
             <div class="cart-item-details">
               <div class="cart-item-title">${item.name}</div>
@@ -243,13 +247,15 @@
     // Carica il carrello dal localStorage
     cart.loadCart()
 
+    // URL del video di YouTube comune a tutti i prodotti
+    const commonVideoUrl = 'https://www.youtube.com/embed/4eUD9kcNygY'
+
     // Product data (10 different candies)
     const products = [
       {
         id: 1,
         name: 'Lollipop Arcobaleno',
-        video:
-          'https://player.vimeo.com/external/414879101.sd.mp4?s=27e3d62d916b637f78acdbc8b8e3fa0417e292d3&profile_id=164&oauth2_token_id=57447761',
+        video: commonVideoUrl,
         description:
           'Lollipop colorato con sapori assortiti di frutta. Perfetto per rallegrare ogni giornata!',
         price: '2,50 €',
@@ -257,8 +263,7 @@
       {
         id: 2,
         name: 'Caramelle Gommose Frutta',
-        video:
-          'https://player.vimeo.com/external/455901284.sd.mp4?s=90d68d934e7cf2a5cf9f8ae71863d11c5bb5126c&profile_id=164&oauth2_token_id=57447761',
+        video: commonVideoUrl,
         description:
           'Morbide caramelle gommose a forma di frutta, realizzate con succhi naturali.',
         price: '3,20 €',
@@ -266,8 +271,7 @@
       {
         id: 3,
         name: 'Cioccolato al Caramello',
-        video:
-          'https://player.vimeo.com/external/371513300.sd.mp4?s=236a53763c4838d2108513ec7c9eb64416dd8201&profile_id=164&oauth2_token_id=57447761',
+        video: commonVideoUrl,
         description:
           'Delizioso cioccolato ripieno di caramello cremoso, una combinazione irresistibile.',
         price: '4,00 €',
@@ -275,8 +279,7 @@
       {
         id: 4,
         name: 'Caramelle alla Menta',
-        video:
-          'https://player.vimeo.com/external/368716609.sd.mp4?s=b99835d50e99adf5c6d227e7ffd013a350ca9c90&profile_id=164&oauth2_token_id=57447761',
+        video: commonVideoUrl,
         description:
           'Caramelle rinfrescanti alla menta, perfette dopo i pasti o in qualsiasi momento.',
         price: '1,80 €',
@@ -284,8 +287,7 @@
       {
         id: 5,
         name: 'Bastoncini di Zucchero',
-        video:
-          'https://player.vimeo.com/external/478803629.sd.mp4?s=d5e8ea16f55823b7b07cd7b60e8cd793dc538b74&profile_id=164&oauth2_token_id=57447761',
+        video: commonVideoUrl,
         description:
           'Classici bastoncini di zucchero a strisce bianche e rosse, sapore di menta piperita.',
         price: '2,00 €',
@@ -293,8 +295,7 @@
       {
         id: 6,
         name: 'Gelée di Frutta',
-        video:
-          'https://player.vimeo.com/external/452647011.sd.mp4?s=9ca717b10c76137a5f3f849a3816d7acf4618b03&profile_id=164&oauth2_token_id=57447761',
+        video: commonVideoUrl,
         description:
           'Gelatine di frutta assortite, morbide e zuccherate, dai colori vivaci.',
         price: '3,50 €',
@@ -302,8 +303,7 @@
       {
         id: 7,
         name: 'Marshmallow Colorati',
-        video:
-          'https://player.vimeo.com/external/421173094.sd.mp4?s=50b3d4ca63d07edd7fb27805e334c97f3e794b8e&profile_id=164&oauth2_token_id=57447761',
+        video: commonVideoUrl,
         description:
           'Morbidi marshmallow in vari colori e sapori, ideali per dessert o da gustare da soli.',
         price: '2,75 €',
@@ -311,8 +311,7 @@
       {
         id: 8,
         name: 'Caramelle al Miele',
-        video:
-          'https://player.vimeo.com/external/446789988.sd.mp4?s=1c6f11d4b2db1a157348b970c07491d4347aad6e&profile_id=164&oauth2_token_id=57447761',
+        video: commonVideoUrl,
         description:
           'Caramelle tradizionali al miele, realizzate con miele di fiori selvatici.',
         price: '2,30 €',
@@ -320,8 +319,7 @@
       {
         id: 9,
         name: 'Pop Rocks Frizzanti',
-        video:
-          'https://player.vimeo.com/external/442593504.sd.mp4?s=ca30f567c8f70d810524316a5126d9f2aeea73e9&profile_id=164&oauth2_token_id=57447761',
+        video: commonVideoUrl,
         description:
           "Caramelle frizzanti che scoppiano in bocca. Un'esperienza divertente e gustosa!",
         price: '1,90 €',
@@ -329,8 +327,7 @@
       {
         id: 10,
         name: 'Cioccolatini Assortiti',
-        video:
-          'https://player.vimeo.com/external/370845105.sd.mp4?s=d613969a7d250d42b777f776e7534a78be66f03e&profile_id=164&oauth2_token_id=57447761',
+        video: commonVideoUrl,
         description:
           'Confezione di cioccolatini assortiti con ripieni diversi. Il regalo perfetto!',
         price: '5,50 €',
@@ -348,9 +345,13 @@
       productCard.innerHTML = `
               <div class="card product-card shadow-sm">
                   <div class="product-video-container">
-                      <video class="product-video" autoplay muted loop playsinline>
-                          <source src="${product.video}" type="video/mp4">
-                      </video>
+                      <iframe 
+                          class="product-video" 
+                          src="${product.video}?mute=1&autoplay=0&loop=1&controls=0&playlist=4eUD9kcNygY" 
+                          frameborder="0" 
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                          allowfullscreen>
+                      </iframe>
                       <div class="video-overlay">
                           <div class="play-button">
                               <i class="fas fa-play"></i>
@@ -421,16 +422,21 @@
     // Aggiungi controlli personalizzati per i video
     document.querySelectorAll(_0x8a5cf1).forEach((overlay, index) => {
       overlay.addEventListener('click', function () {
-        const video = this.previousElementSibling
+        // Ottieni l'iframe
+        const iframe = this.previousElementSibling
+        const src = iframe.src
 
-        if (video.paused) {
-          video.play()
-          this.querySelector('.play-button').innerHTML =
-            '<i class="fas fa-pause"></i>'
-        } else {
-          video.pause()
+        // Metodo alternativo per controllare il play/pause per iframes di YouTube
+        if (src.includes('autoplay=1')) {
+          // Pausa il video cambiando il src (rimuovendo autoplay)
+          iframe.src = src.replace('autoplay=1', 'autoplay=0')
           this.querySelector('.play-button').innerHTML =
             '<i class="fas fa-play"></i>'
+        } else {
+          // Avvia il video cambiando il src (aggiungendo autoplay)
+          iframe.src = src.replace('autoplay=0', 'autoplay=1')
+          this.querySelector('.play-button').innerHTML =
+            '<i class="fas fa-pause"></i>'
         }
       })
     })
@@ -439,19 +445,12 @@
     document.addEventListener(
       'contextmenu',
       function (e) {
-        if (e.target.tagName === 'VIDEO') {
+        if (e.target.tagName === 'IFRAME') {
           e.preventDefault()
         }
       },
       false
     )
-
-    // Disabilita i controlli nativi del browser
-    document.querySelectorAll('video').forEach((video) => {
-      video.addEventListener('controlschange', function (e) {
-        e.preventDefault()
-      })
-    })
   })
 
   // Aggiungi protezione contro la manipolazione della console del browser

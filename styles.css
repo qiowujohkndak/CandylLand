@@ -118,6 +118,7 @@ header {
   height: 100%;
   object-fit: cover;
   pointer-events: none; /* Disabilita gli eventi sul video stesso */
+  border: none;
 }
 
 .video-overlay {
@@ -299,6 +300,7 @@ header {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border: none;
 }
 
 .cart-item-details {
@@ -527,4 +529,15 @@ video::-webkit-media-controls-volume-slider {
     flex-shrink: 0; /* Impedisce al bottone di restringersi troppo */
     max-width: 55%; /* Limita la larghezza massima del bottone */
   }
+}
+
+/* Assicura che gli iframe di YouTube abbiano le dimensioni corrette */
+iframe.product-video,
+iframe.cart-item-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
 }
