@@ -91,100 +91,276 @@
         -ms-user-select: text;
         user-select: text;
       }
+
+      /* Stile per il modale di autenticazione */
+      #authModal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .auth-container {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 2rem;
+        width: 90%;
+        max-width: 400px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        text-align: center;
+      }
+
+      .auth-header {
+        margin-bottom: 1.5rem;
+      }
+
+      .auth-header img {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 1rem;
+      }
+
+      .auth-form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .auth-input {
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+      }
+
+      .auth-button {
+        background-color: #ff6b6b;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 12px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .auth-button:hover {
+        background-color: #ff5252;
+      }
+
+      .auth-error {
+        color: #ff5252;
+        margin-top: 1rem;
+        display: none;
+      }
+
+      .auth-attempts {
+        font-size: 0.8rem;
+        color: #777;
+        margin-top: 1rem;
+      }
+
+      /* Blocca lo sfondo quando il modale è aperto */
+      .no-scroll {
+        overflow: hidden;
+      }
+
+      /* Nasconde temporaneamente il contenuto finché non viene autenticato */
+      .content-hidden {
+        display: none;
+      }
     </style>
   </head>
-  <body>
-    <!-- Header -->
-    <header class="bg-light py-3 shadow-sm">
-      <div class="container">
-        <div class="d-flex justify-content-between align-items-center">
-          <h1 class="candy-brand">CandyLand</h1>
-          <div class="d-flex align-items-center">
-            <a
-              href="https://t.me/asraelops"
-              class="btn btn-contact me-3"
-              target="_blank"
-            >
-              <i class="fab fa-telegram me-1"></i> Contattaci
-            </a>
-            <div class="cart-icon" id="cartIcon">
-              <i class="fas fa-shopping-cart fs-4"></i>
-              <span class="badge bg-primary rounded-pill" id="cartCount"
-                >0</span
-              >
-            </div>
-          </div>
+  <body class="no-scroll">
+    <!-- Modale di Autenticazione -->
+    <div id="authModal">
+      <div class="auth-container">
+        <div class="auth-header">
+          <i class="fas fa-lock fa-3x" style="color: #ff6b6b"></i>
+          <h2 class="mt-3">Accesso Protetto</h2>
+          <p class="text-muted">
+            Inserisci la password per accedere a CandyLand
+          </p>
         </div>
-      </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="container my-5 pt-2">
-      <section class="hero-section text-center mb-5">
-        <h2 class="display-4 fw-bold candy-title">
-          Le caramelle più dolci del mondo
-        </h2>
-        <p class="lead">
-          Scopri la nostra selezione di caramelle artigianali, perfette per ogni
-          occasione!
-        </p>
-      </section>
-
-      <!-- Products Grid -->
-      <section class="products-section">
-        <div class="row g-4" id="products-container">
-          <!-- Products will be loaded dynamically with JavaScript -->
+        <div class="auth-form">
+          <input
+            type="password"
+            id="authPassword"
+            class="auth-input"
+            placeholder="Password"
+            autocomplete="off"
+          />
+          <button id="authSubmit" class="auth-button">Accedi</button>
+          <p id="authError" class="auth-error">Password errata. Riprova.</p>
+          <p id="authAttempts" class="auth-attempts">
+            Tentativi rimasti: <span id="attemptsLeft">3</span>
+          </p>
         </div>
-      </section>
-    </main>
-
-    <!-- Shopping Cart Sidebar -->
-    <div class="cart-sidebar" id="cartSidebar">
-      <div class="cart-header">
-        <h3 class="cart-title">Il tuo carrello</h3>
-        <button class="btn-close" id="closeCart"></button>
-      </div>
-      <div class="cart-body" id="cartItems">
-        <!-- Cart items will be added here dynamically -->
-        <div class="empty-cart-message" id="emptyCartMessage">
-          <i class="fas fa-shopping-basket"></i>
-          <p>Il tuo carrello è vuoto</p>
-        </div>
-      </div>
-      <div class="cart-footer">
-        <div class="d-flex justify-content-between mb-3">
-          <span class="fw-bold">Totale:</span>
-          <span class="cart-total" id="cartTotal">0,00 €</span>
-        </div>
-        <a href="#" class="btn btn-checkout w-100 disabled" id="checkoutBtn">
-          Procedi all'ordine <i class="fab fa-telegram ms-1"></i>
-        </a>
       </div>
     </div>
 
-    <!-- Cart Overlay -->
-    <div class="cart-overlay" id="cartOverlay"></div>
+    <!-- Contenuto della pagina (inizialmente nascosto) -->
+    <div id="pageContent" class="content-hidden">
+      <!-- Header -->
+      <header class="bg-light py-3 shadow-sm">
+        <div class="container">
+          <div class="d-flex justify-content-between align-items-center">
+            <h1 class="candy-brand">CandyLand</h1>
+            <div class="d-flex align-items-center">
+              <a
+                href="https://t.me/asraelops"
+                class="btn btn-contact me-3"
+                target="_blank"
+              >
+                <i class="fab fa-telegram me-1"></i> Contattaci
+              </a>
+              <div class="cart-icon" id="cartIcon">
+                <i class="fas fa-shopping-cart fs-4"></i>
+                <span class="badge bg-primary rounded-pill" id="cartCount"
+                  >0</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
 
-    <!-- Footer -->
-    <footer class="bg-light py-4 mt-5">
-      <div class="container text-center">
-        <p class="mb-0">© 2025 CandyLand - Tutti i diritti riservati</p>
-        <div class="social-icons mt-2">
-          <a href="#" class="text-decoration-none me-2"
-            ><i class="fab fa-facebook"></i
-          ></a>
-          <a href="#" class="text-decoration-none me-2"
-            ><i class="fab fa-instagram"></i
-          ></a>
-          <a href="#" class="text-decoration-none"
-            ><i class="fab fa-twitter"></i
-          ></a>
+      <!-- Main Content -->
+      <main class="container my-5 pt-2">
+        <section class="hero-section text-center mb-5">
+          <h2 class="display-4 fw-bold candy-title">
+            Le caramelle più dolci del mondo
+          </h2>
+          <p class="lead">
+            Scopri la nostra selezione di caramelle artigianali, perfette per
+            ogni occasione!
+          </p>
+        </section>
+
+        <!-- Products Grid -->
+        <section class="products-section">
+          <div class="row g-4" id="products-container">
+            <!-- Products will be loaded dynamically with JavaScript -->
+          </div>
+        </section>
+      </main>
+
+      <!-- Shopping Cart Sidebar -->
+      <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+          <h3 class="cart-title">Il tuo carrello</h3>
+          <button class="btn-close" id="closeCart"></button>
+        </div>
+        <div class="cart-body" id="cartItems">
+          <!-- Cart items will be added here dynamically -->
+          <div class="empty-cart-message" id="emptyCartMessage">
+            <i class="fas fa-shopping-basket"></i>
+            <p>Il tuo carrello è vuoto</p>
+          </div>
+        </div>
+        <div class="cart-footer">
+          <div class="d-flex justify-content-between mb-3">
+            <span class="fw-bold">Totale:</span>
+            <span class="cart-total" id="cartTotal">0,00 €</span>
+          </div>
+          <a href="#" class="btn btn-checkout w-100 disabled" id="checkoutBtn">
+            Procedi all'ordine <i class="fab fa-telegram ms-1"></i>
+          </a>
         </div>
       </div>
-    </footer>
+
+      <!-- Cart Overlay -->
+      <div class="cart-overlay" id="cartOverlay"></div>
+
+      <!-- Footer -->
+      <footer class="bg-light py-4 mt-5">
+        <div class="container text-center">
+          <p class="mb-0">© 2025 CandyLand - Tutti i diritti riservati</p>
+          <div class="social-icons mt-2">
+            <a href="#" class="text-decoration-none me-2"
+              ><i class="fab fa-facebook"></i
+            ></a>
+            <a href="#" class="text-decoration-none me-2"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="#" class="text-decoration-none"
+              ><i class="fab fa-twitter"></i
+            ></a>
+          </div>
+        </div>
+      </footer>
+    </div>
 
     <!-- Bootstrap 5 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script di Autenticazione -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const correctPassword = 'AsraelOps' // Password corretta
+        const authModal = document.getElementById('authModal')
+        const pageContent = document.getElementById('pageContent')
+        const passwordInput = document.getElementById('authPassword')
+        const submitButton = document.getElementById('authSubmit')
+        const errorMessage = document.getElementById('authError')
+        const attemptsLeft = document.getElementById('attemptsLeft')
+
+        let attempts = 3 // Numero di tentativi consentiti
+
+        // Check if already authenticated
+        if (sessionStorage.getItem('authenticated') === 'true') {
+          authModal.style.display = 'none'
+          pageContent.classList.remove('content-hidden')
+          document.body.classList.remove('no-scroll')
+        }
+
+        // Handle form submission
+        function handleSubmit() {
+          const password = passwordInput.value
+
+          if (password === correctPassword) {
+            // Password corretta
+            sessionStorage.setItem('authenticated', 'true')
+            authModal.style.display = 'none'
+            pageContent.classList.remove('content-hidden')
+            document.body.classList.remove('no-scroll')
+          } else {
+            // Password errata
+            attempts--
+            attemptsLeft.textContent = attempts
+            errorMessage.style.display = 'block'
+            passwordInput.value = ''
+
+            if (attempts <= 0) {
+              // Blocca l'accesso dopo troppi tentativi falliti
+              submitButton.disabled = true
+              passwordInput.disabled = true
+              errorMessage.textContent =
+                'Troppi tentativi falliti. Ricarica la pagina per riprovare.'
+            }
+          }
+        }
+
+        // Submit form on button click
+        submitButton.addEventListener('click', handleSubmit)
+
+        // Submit form on Enter key
+        passwordInput.addEventListener('keypress', function (e) {
+          if (e.key === 'Enter') {
+            handleSubmit()
+          }
+        })
+
+        // Focus password input automatically
+        passwordInput.focus()
+      })
+    </script>
 
     <!-- Custom JavaScript (Versione minificata) -->
     <script src="script.js" noprotect="true"></script>
