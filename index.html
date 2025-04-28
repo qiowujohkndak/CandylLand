@@ -37,14 +37,24 @@
           }
         })
 
-        // Rileva apertura console
+        // Rileva apertura console - modificato per evitare falsi positivi su mobile
         const devtools = {
           isOpen: false,
           orientation: undefined,
         }
 
         // Funzione per controllare periodicamente se DevTools è aperto
-        setInterval(function () {
+        // Versione migliorata che ignora i cambiamenti di viewport durante l'input su mobile
+        const checkDevTools = function () {
+          // Ignora il controllo se un elemento di input è attivo
+          if (
+            document.activeElement &&
+            (document.activeElement.tagName === 'INPUT' ||
+              document.activeElement.tagName === 'TEXTAREA')
+          ) {
+            return
+          }
+
           const widthThreshold = window.outerWidth - window.innerWidth > 160
           const heightThreshold = window.outerHeight - window.innerHeight > 160
 
@@ -58,7 +68,25 @@
           } else {
             devtools.isOpen = false
           }
-        }, 1000)
+        }
+
+        // Controllo meno frequente e solo quando la pagina non è in focus per evitare falsi positivi
+        let checkInterval
+
+        // Quando la pagina è in focus, specialmente durante l'input, rallenta o ferma i controlli
+        window.addEventListener('focus', function () {
+          if (checkInterval) clearInterval(checkInterval)
+          checkInterval = setInterval(checkDevTools, 3000) // controllo più lento quando in focus
+        })
+
+        // Riprendi controlli più frequenti quando la pagina non è in focus
+        window.addEventListener('blur', function () {
+          if (checkInterval) clearInterval(checkInterval)
+          checkInterval = setInterval(checkDevTools, 1000)
+        })
+
+        // Inizia con controlli lenti
+        checkInterval = setInterval(checkDevTools, 3000)
 
         // Protezione contro il copia-incolla del codice
         document.addEventListener('copy', function (e) {
@@ -174,6 +202,25 @@
       /* Nasconde temporaneamente il contenuto finché non viene autenticato */
       .content-hidden {
         display: none;
+      }
+
+      /* Modifiche per fix Safari mobile */
+      @supports (-webkit-touch-callout: none) {
+        /* Solo per Safari su iOS */
+        .cart-footer {
+          padding-bottom: 40px !important; /* Spazio extra per il bottom bar di Safari */
+        }
+
+        .btn-checkout {
+          margin-bottom: 20px; /* Spazio aggiuntivo sotto il bottone */
+        }
+      }
+
+      /* Fix universale per mobile */
+      @media (max-width: 767px) {
+        .cart-footer {
+          padding-bottom: 30px; /* Spazio extra su tutti i dispositivi mobili */
+        }
       }
     </style>
   </head>
@@ -359,6 +406,28 @@
 
         // Focus password input automatically
         passwordInput.focus()
+
+        // Gestione specifica per dispositivi mobili
+        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+          // Disabilita temporaneamente le protezioni durante l'inserimento della password
+          passwordInput.addEventListener('focus', function () {
+            // Rimuove temporaneamente le protezioni di rilevamento DevTools
+            const checkIntervals = window._checkIntervals || []
+            checkIntervals.forEach((interval) => clearInterval(interval))
+          })
+
+          // Riattiva le protezioni quando l'utente smette di interagire con l'input
+          passwordInput.addEventListener('blur', function () {
+            // Riattiva le protezioni dopo un breve ritardo
+            setTimeout(function () {
+              // Riavvia i controlli ma con una frequenza più bassa su mobile
+              if (!window._checkIntervals) window._checkIntervals = []
+              window._checkIntervals.push(
+                setInterval(window._checkDevTools, 5000)
+              )
+            }, 1000)
+          })
+        }
       })
     </script>
 
@@ -410,6 +479,15 @@
             e.preventDefault()
           }
         })
+
+        // Fix per Safari mobile per assicurarsi che il pulsante di checkout sia sempre visibile
+        if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+          const cartFooter = document.querySelector('.cart-footer')
+          if (cartFooter) {
+            // Aggiungi classe specifica per Safari
+            cartFooter.classList.add('safari-fix')
+          }
+        }
       })
     </script>
   </body>
