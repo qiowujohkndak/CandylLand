@@ -190,13 +190,11 @@
 
           cartItemEl.innerHTML = `
             <div class="cart-item-img">
-              <iframe 
+              <img 
                 class="cart-item-video" 
-                src="https://www.youtube.com/embed/4eUD9kcNygY?mute=1&autoplay=0&loop=1&controls=0&playlist=4eUD9kcNygY" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-              </iframe>
+                src="images/candy-placeholder.jpg" 
+                alt="${item.name}"
+              />
             </div>
             <div class="cart-item-details">
               <div class="cart-item-title">${item.name}</div>
@@ -343,21 +341,7 @@
       productCard.className = 'col-sm-6 col-md-4 col-lg-3'
 
       productCard.innerHTML = `
-              <div class="card product-card shadow-sm">
-                  <div class="product-video-container">
-                      <iframe 
-                          class="product-video" 
-                          src="${product.video}?mute=1&autoplay=0&loop=1&controls=0&playlist=4eUD9kcNygY" 
-                          frameborder="0" 
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                          allowfullscreen>
-                      </iframe>
-                      <div class="video-overlay">
-                          <div class="play-button">
-                              <i class="fas fa-play"></i>
-                          </div>
-                      </div>
-                  </div>
+              <div class="card product-card shadow-sm" data-id="${product.id}">
                   <div class="card-body">
                       <h5 class="card-title product-title">${product.name}</h5>
                       <p class="card-text">${product.description}</p>
@@ -373,6 +357,100 @@
 
       productsContainer.appendChild(productCard)
     })
+
+    // Aggiungi gestione del click sulla card per aprire il modale
+    document.querySelectorAll('.product-card').forEach((card) => {
+      card.addEventListener('click', function (e) {
+        // Non aprire il modale se si è cliccato sul pulsante "aggiungi al carrello"
+        if (e.target.closest('.add-to-cart')) {
+          return
+        }
+
+        const productId = parseInt(this.getAttribute('data-id'))
+        const product = products.find((p) => p.id === productId)
+
+        if (product) {
+          // Imposta i dettagli del prodotto nel modale
+          document.getElementById('productModalLabel').textContent =
+            product.name
+          document.getElementById('productDescription').textContent =
+            product.description
+          document.getElementById('productPrice').textContent = product.price
+          document
+            .querySelector('.add-to-cart-modal')
+            .setAttribute('data-id', productId)
+
+          // Prepara il video per essere caricato ma non ancora avviato
+          const iframe = document.querySelector('.product-video-modal')
+          const videoId = '4eUD9kcNygY' // Usa lo stesso ID video per tutti i prodotti
+          iframe.src = `https://www.youtube.com/embed/${videoId}?mute=1&autoplay=0&loop=1&controls=0&playlist=${videoId}&showinfo=0&rel=0`
+
+          // Mostra il modale
+          const productModal = new bootstrap.Modal(
+            document.getElementById('productModal')
+          )
+          productModal.show()
+        }
+      })
+    })
+
+    // Gestione del click sul video nel modale
+    document
+      .querySelector('.video-overlay-modal')
+      .addEventListener('click', function () {
+        const iframe = this.previousElementSibling
+        const videoId = '4eUD9kcNygY'
+        const playButton = this.querySelector('.play-button')
+
+        // Controlla se il video è in riproduzione o meno
+        if (iframe.src.includes('autoplay=1')) {
+          // Pausa il video
+          iframe.src = `https://www.youtube.com/embed/${videoId}?mute=1&autoplay=0&loop=1&controls=0&playlist=${videoId}&showinfo=0&rel=0`
+          playButton.innerHTML = '<i class="fas fa-play"></i>'
+          playButton.classList.remove('hidden')
+        } else {
+          // Avvia il video senza mostrare le preview
+          iframe.src = `https://www.youtube.com/embed/${videoId}?mute=1&autoplay=1&loop=1&controls=0&playlist=${videoId}&showinfo=0&rel=0`
+          playButton.innerHTML = '<i class="fas fa-pause"></i>'
+          playButton.classList.add('hidden')
+        }
+      })
+
+    // Aggiungi prodotti al carrello dal modale
+    document
+      .querySelector('.add-to-cart-modal')
+      .addEventListener('click', function () {
+        const productId = parseInt(this.getAttribute('data-id'))
+        const product = products.find((p) => p.id === productId)
+
+        if (product) {
+          cart.addItem(product)
+
+          // Feedback visivo
+          this.innerHTML = 'Aggiunto! <i class="fas fa-check ms-1"></i>'
+
+          // Ripristina il testo del pulsante dopo 1.5 secondi
+          setTimeout(() => {
+            this.innerHTML =
+              'Aggiungi <i class="fas fa-shopping-cart ms-1"></i>'
+          }, 1500)
+        }
+      })
+
+    // Resetta il video quando il modale viene chiuso
+    document
+      .getElementById('productModal')
+      .addEventListener('hidden.bs.modal', function () {
+        const iframe = document.querySelector('.product-video-modal')
+        const videoId = '4eUD9kcNygY'
+        iframe.src = `https://www.youtube.com/embed/${videoId}?mute=1&autoplay=0&loop=1&controls=0&playlist=${videoId}&showinfo=0&rel=0`
+
+        const playButton = document.querySelector(
+          '.video-overlay-modal .play-button'
+        )
+        playButton.innerHTML = '<i class="fas fa-play"></i>'
+        playButton.classList.remove('hidden')
+      })
 
     // Aggiornare l'UI del carrello al caricamento
     cart.updateUI()
@@ -424,18 +502,18 @@
       overlay.addEventListener('click', function () {
         // Ottieni l'iframe
         const iframe = this.previousElementSibling
-        const src = iframe.src
+        const videoId = '4eUD9kcNygY'
         const playButton = this.querySelector('.play-button')
 
-        // Metodo alternativo per controllare il play/pause per iframes di YouTube
-        if (src.includes('autoplay=1')) {
-          // Pausa il video cambiando il src (rimuovendo autoplay)
-          iframe.src = src.replace('autoplay=1', 'autoplay=0')
+        // Controlla se il video è in riproduzione o meno
+        if (iframe.src.includes('autoplay=1')) {
+          // Pausa il video
+          iframe.src = `https://www.youtube.com/embed/${videoId}?mute=1&autoplay=0&loop=1&controls=0&playlist=${videoId}&showinfo=0&rel=0`
           playButton.innerHTML = '<i class="fas fa-play"></i>'
           playButton.classList.remove('hidden')
         } else {
-          // Avvia il video cambiando il src (aggiungendo autoplay)
-          iframe.src = src.replace('autoplay=0', 'autoplay=1')
+          // Avvia il video senza mostrare le preview
+          iframe.src = `https://www.youtube.com/embed/${videoId}?mute=1&autoplay=1&loop=1&controls=0&playlist=${videoId}&showinfo=0&rel=0`
           playButton.innerHTML = '<i class="fas fa-pause"></i>'
           playButton.classList.add('hidden')
         }
