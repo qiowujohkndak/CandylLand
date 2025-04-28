@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" oncontextmenu="return false">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,6 +16,82 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    <script>
+      // Anti-debug code
+      ;(function () {
+        // Disabilita clic destro
+        document.addEventListener('contextmenu', function (e) {
+          e.preventDefault()
+        })
+
+        // Blocca le combinazioni di tasti per gli strumenti di sviluppo
+        document.addEventListener('keydown', function (e) {
+          // Ctrl+Shift+I / F12 / Ctrl+Shift+J / Ctrl+Shift+C
+          if (
+            (e.ctrlKey &&
+              e.shiftKey &&
+              (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) ||
+            e.keyCode === 123
+          ) {
+            e.preventDefault()
+          }
+        })
+
+        // Rileva apertura console
+        const devtools = {
+          isOpen: false,
+          orientation: undefined,
+        }
+
+        // Funzione per controllare periodicamente se DevTools è aperto
+        setInterval(function () {
+          const widthThreshold = window.outerWidth - window.innerWidth > 160
+          const heightThreshold = window.outerHeight - window.innerHeight > 160
+
+          if (widthThreshold || heightThreshold) {
+            if (!devtools.isOpen) {
+              devtools.isOpen = true
+              // Redirect o offusca la pagina
+              document.body.innerHTML =
+                '<div style="text-align:center; padding:50px;"><h1>Ispezione non consentita</h1><p>Questa pagina è protetta.</p></div>'
+            }
+          } else {
+            devtools.isOpen = false
+          }
+        }, 1000)
+
+        // Protezione contro il copia-incolla del codice
+        document.addEventListener('copy', function (e) {
+          e.clipboardData.setData('text/plain', 'Copia non consentita')
+          e.preventDefault()
+        })
+
+        document.addEventListener('selectstart', function (e) {
+          if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+            e.preventDefault()
+          }
+        })
+      })()
+    </script>
+    <style>
+      /* Nasconde il codice sorgente quando viene visualizzato con "Visualizza sorgente pagina" */
+      body::-webkit-scrollbar {
+        display: none;
+      }
+      * {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      input,
+      textarea {
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
+        user-select: text;
+      }
+    </style>
   </head>
   <body>
     <!-- Header -->
@@ -43,7 +119,7 @@
     </header>
 
     <!-- Main Content -->
-    <main class="container my-5">
+    <main class="container my-5 pt-2">
       <section class="hero-section text-center mb-5">
         <h2 class="display-4 fw-bold candy-title">
           Le caramelle più dolci del mondo
@@ -109,7 +185,56 @@
 
     <!-- Bootstrap 5 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JavaScript -->
-    <script src="script.js"></script>
+
+    <!-- Custom JavaScript (Versione minificata) -->
+    <script src="script.js" noprotect="true"></script>
+
+    <!-- Protezione contenuto -->
+    <script>
+      // Offusca ulteriormente il codice fonte
+      document.addEventListener('DOMContentLoaded', function () {
+        // Monitoraggio delle funzioni di debug
+        ;(function () {
+          const methods = [
+            'log',
+            'debug',
+            'info',
+            'warn',
+            'error',
+            'exception',
+            'table',
+            'trace',
+          ]
+          const originalConsole = window.console
+          const newConsole = {}
+
+          methods.forEach(function (method) {
+            newConsole[method] = function () {
+              if (method === 'error' || method === 'warn') {
+                originalConsole[method].apply(originalConsole, arguments)
+              } else {
+                originalConsole.warn('Console usage is restricted')
+              }
+            }
+          })
+
+          window.console = newConsole
+        })()
+
+        // Disabilita la possibilità di salvare la pagina
+        document.addEventListener('keydown', function (e) {
+          if (e.ctrlKey && e.key === 's') {
+            e.preventDefault()
+          }
+        })
+
+        // Disabilita la visualizzazione del codice sorgente
+        document.addEventListener('keydown', function (e) {
+          if (e.ctrlKey && e.key === 'u') {
+            e.preventDefault()
+          }
+        })
+      })
+    </script>
   </body>
 </html>

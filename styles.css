@@ -9,6 +9,14 @@ body {
 }
 
 /* Header styles */
+header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
 .candy-brand {
   font-family: 'Lobster', cursive;
   color: #ff6b6b;
@@ -63,11 +71,28 @@ body {
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .product-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.card-text {
+  flex-grow: 1;
+  margin-bottom: 15px;
+}
+
+.product-footer {
+  margin-top: auto;
 }
 
 /* Video container and overlay */
@@ -412,8 +437,30 @@ video::-webkit-media-controls-volume-slider {
 }
 
 @media (max-width: 575.98px) {
+  /* Modificato per visualizzare 2 card per riga su mobile */
+  .col-sm-6.col-md-4.col-lg-3 {
+    width: 50%;
+  }
+
   .product-video-container {
-    height: 160px;
+    height: 150px;
+  }
+
+  .product-title {
+    font-size: 1rem;
+  }
+
+  .card-text {
+    font-size: 0.8rem;
+  }
+
+  .product-price {
+    font-size: 1rem;
+  }
+
+  .btn-candy {
+    padding: 5px 10px;
+    font-size: 0.8rem;
   }
 
   .cart-sidebar {
