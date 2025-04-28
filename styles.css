@@ -93,6 +93,16 @@ header {
 
 .product-footer {
   margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product-price {
+  font-weight: 700;
+  color: #ff9e7d;
+  font-size: 1.2rem;
+  margin-right: 10px;
 }
 
 /* Video container and overlay */
@@ -149,12 +159,6 @@ header {
 .product-title {
   font-weight: 600;
   color: #ff6b6b;
-}
-
-.product-price {
-  font-weight: 700;
-  color: #ff9e7d;
-  font-size: 1.2rem;
 }
 
 .btn-candy {
@@ -505,13 +509,22 @@ video::-webkit-media-controls-volume-slider {
     font-size: 0.7rem;
   }
 
+  /* Rimuovo il layout a colonna per mantenere prezzo e bottone affiancati */
   .product-footer {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row; /* Mantiene layout orizzontale */
+    justify-content: space-between;
+    align-items: center;
   }
 
-  .product-footer .btn-candy {
-    margin-top: 5px;
-    align-self: flex-end;
+  /* Assicuro che ci sia abbastanza spazio tra prezzo e bottone */
+  .product-price {
+    margin-right: 5px;
+    max-width: 40%; /* Limita la larghezza del prezzo per dare spazio al bottone */
+  }
+
+  /* Assicura che il bottone non sia troppo grande */
+  .btn-candy {
+    flex-shrink: 0; /* Impedisce al bottone di restringersi troppo */
+    max-width: 55%; /* Limita la larghezza massima del bottone */
   }
 }
