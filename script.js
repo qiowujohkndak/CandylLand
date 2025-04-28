@@ -425,18 +425,19 @@
         // Ottieni l'iframe
         const iframe = this.previousElementSibling
         const src = iframe.src
+        const playButton = this.querySelector('.play-button')
 
         // Metodo alternativo per controllare il play/pause per iframes di YouTube
         if (src.includes('autoplay=1')) {
           // Pausa il video cambiando il src (rimuovendo autoplay)
           iframe.src = src.replace('autoplay=1', 'autoplay=0')
-          this.querySelector('.play-button').innerHTML =
-            '<i class="fas fa-play"></i>'
+          playButton.innerHTML = '<i class="fas fa-play"></i>'
+          playButton.classList.remove('hidden')
         } else {
           // Avvia il video cambiando il src (aggiungendo autoplay)
           iframe.src = src.replace('autoplay=0', 'autoplay=1')
-          this.querySelector('.play-button').innerHTML =
-            '<i class="fas fa-pause"></i>'
+          playButton.innerHTML = '<i class="fas fa-pause"></i>'
+          playButton.classList.add('hidden')
         }
       })
     })

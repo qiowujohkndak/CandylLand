@@ -157,6 +157,11 @@ header {
   transform: scale(1.1);
 }
 
+.play-button.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
 .product-title {
   font-weight: 600;
   color: #ff6b6b;
